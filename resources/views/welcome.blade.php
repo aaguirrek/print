@@ -95,15 +95,70 @@
         <script src="/demo.js" type="text/javascript"></script>
         <script src="/socket.io.js" type="text/javascript"></script>
         <script>
+            var dat = new Date();
+            var datef = formatDate( dat );
+
+            function formatDate(date) {
+                var d = new Date(date),
+                    month = '' + (d.getMonth() + 1),
+                    day = '' + d.getDate(),
+                    year = d.getFullYear();
+
+                if (month.length < 2) 
+                    month = '0' + month;
+                if (day.length < 2) 
+                    day = '0' + day;
+
+                return [ day , month, year].join('-');
+            }
+            function formatHour(date) {
+                var d = new Date(date),
+                    month = '' + (d.getHours() + 1),
+                    day = '' + (d.getMinutes() + 1),
+                    year = '' + (d.getSeconds() + 1);
+
+                if (month.length < 2) 
+                    month = '0' + month;
+                if (day.length < 2) 
+                    day = '0' + day;
+                if (year.length < 2) 
+                    year = '0' + year;
+
+                return [ day , month, year].join(':');
+            }
+
+
+            var pulled="no";
+            var date_pull="";
+
+            if (localStorage.getItem("pull")){
+                date_pull = localStorage.getItem("pull");
+            }
+            if(datef != date_pull ){
+
+                $.post('/api/checkall', {}, function(result){});
+                localStorage.setItem("pull", datef);
+            }
+
+
             var print = io('http://frappe.cf:4003');
             print.on('print-socket',function(doc){
                 doc = JSON.parse(doc);
+                dat = new Date();
+                doc.time = formatDate(dat)+" "+formatHour(dat);
                 if(doc.sunat.ruc == "{{$empresa->ruc}}" ){
-                    console.log(doc);
-                    $.post('/api/print', doc, function(result){
-                    });
+                    if (localStorage.getItem("pull")){
+                        date_pull = localStorage.getItem("pull");
+                    }
+                    if(datef != date_pull ){
+
+                        $.post('/api/checkall', {}, function(result){});
+                        localStorage.setItem("pull", datef);
+                    }
+                    $.post('/api/print', doc, function(result){});
                 }
             });
+            
         </script>        
     </body>
 </html>

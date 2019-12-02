@@ -38,7 +38,7 @@ class Thermal
             $connector = new NetworkPrintConnector( $printer1->ruta , 9100 );
         }
         $printer = new Printer($connector);
-        $printer -> text(date("d/m/Y h:i:sa") . " - " . $request["sunat"]["razon_social"] ."\n");
+        $printer -> text($request["time"] . " - " . $request["sunat"]["razon_social"] ."\n");
         $printer -> setJustification(1);
         $printer->setFont(1);
         $printer -> text($request["mesa"]."\n\n");
