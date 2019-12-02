@@ -20,8 +20,8 @@ class Thermal
         if( count($empresa) > 0 ){
             $empresa = $empresa[0];   
         }
-        $printer1 = Printers::Where('printer', 'comanda')->first();
-        $connector = null;
+        $printer1 = Printers::Where('ubicacion', 'comanda')->first();
+        
         if( $printer1 )
         {   
         }
@@ -38,14 +38,14 @@ class Thermal
             $connector = new NetworkPrintConnector( $printer1->ruta , 9100 );
         }
         $printer = new Printer($connector);
-        $printer -> text($request["time"] . " - " . $request["sunat"]["razon_social"] ."\n");
+        $printer -> text($request["time"] . " \n ");
         $printer -> setJustification(1);
         $printer->setFont(1);
-        $printer -> text($request["mesa"]."\n\n");
+        $printer -> text("MESA: ".$request["mesa"]."\n\n");
         $printer -> setJustification(0);
         foreach ($request["message"]["items"] as $key => $value) 
         {
-            $printer -> text( $value["qty"] . " :: " . $value["item_name"] . "\n\n");
+            $printer -> text( $value["qty"] . " :: " . eliminar_acentos($value["item_name"]) . "\n\n");
             if(array_key_exists("extras", $value )  )
             {
                 if(count( $value["extras"] ) > 0 )
@@ -78,7 +78,7 @@ class Thermal
         if( count($empresa) > 0 ){
             $empresa = $empresa[0];   
         }
-        $printer1 = Printers::Where('printer', 'caja')->first();
+        $printer1 = Printers::Where('ubicacion', 'caja')->first();
         $connector = null;
         if( $printer1 )
         {    
@@ -102,7 +102,7 @@ class Thermal
         $printer -> text($request["sunat"]["razon_social"]."\n");
         $printer -> text($request["sunat"]["ruc"]."\n\n");
         $printer -> setJustification(0);
-        $printer -> text("Items:\n");
+        $printer -> text("ITEMS:\n");
         foreach ($request["message"]["items"] as $key => $value) 
         {
             $line = sprintf('%3.0f %-40.40s %5.2f %13.2f',$value["qty"] , eliminar_acentos(  $value["item_name"] ), $value["rate"], ( (int)$value["qty"] * (float)$value["rate"] ) );
@@ -129,7 +129,7 @@ class Thermal
         if( count($empresa) > 0 ){
             $empresa = $empresa[0];   
         }
-        $printer1 = Printers::Where('printer', 'caja')->first();
+        $printer1 = Printers::Where('ubicacion', 'caja')->first();
         $connector = null;
         if( $printer1 )
         {
@@ -159,9 +159,9 @@ class Thermal
         $printer -> text($request["sunat"]["direccion"]."\n\n");
         $printer -> text("Fecha: ".$request["message"]["due_date"]."\n\n");
         $printer -> setJustification(0);
-        $printer -> text("Adquiriente:\n");
+        $printer -> text("ADQUIRIENTE:\n");
         $printer -> text($request["message"]["customer_name"]."\n\n");
-        $printer -> text("Items:\n");
+        $printer -> text("ITEMS:\n");
         foreach ($request["message"]["items"] as $key => $value) 
         {
             $line = sprintf('%3.0f %-40.40s %5.2f %13.2f',$value["qty"] , eliminar_acentos(  $value["item_name"] ), $value["rate"], ( (int)$value["qty"] * (float)$value["rate"] ) );
@@ -194,7 +194,7 @@ class Thermal
         }
         $qrCode = \QrCode::format('png')->size(300)->generate($request["message"]["qr"]);
         Storage::disk('local')->put('qrcode.png', $qrCode);
-        $printer1 = Printers::Where('printer', 'caja')->first();
+        $printer1 = Printers::Where('ubicacion', 'caja')->first();
         $connector = null;
         if( $printer1 )
         {
@@ -222,10 +222,10 @@ class Thermal
         $printer -> text($request["sunat"]["direccion"]."\n\n");
         $printer -> text("Fecha: ".$request["message"]["fecha_de_emision"]."\n\n");
         $printer -> setJustification(0);
-        $printer -> text("Adquiriente:\n");
+        $printer -> text("ADQUIRIENTE:\n");
         $printer -> text("RUC: ".$request["message"]["cliente_numero_de_documento"]."\n");
         $printer -> text($request["message"]["cliente_denominacion"]."\n\n");
-        $printer -> text("Items:\n");
+        $printer -> text("ITEMS:\n");
         foreach ($request["message"]["items"] as $key => $value) 
         {
             $line = sprintf('%3.0f %-40.40s %5.2f %13.2f',$value["cantidad"] , eliminar_acentos(  $value["codigo_interno"] ), $value["precio_unitario"], $value["total"]);
@@ -271,7 +271,7 @@ class Thermal
         }
         $qrCode = \QrCode::format('png')->size(300)->generate($request["message"]["qr"]);
         Storage::disk('local')->put('qrcode.png', $qrCode);
-        $printer1 = Printers::Where('printer', 'caja')->first();
+        $printer1 = Printers::Where('ubicacion', 'caja')->first();
         $connector = null;
         if( $printer1 )
         {    
@@ -300,11 +300,11 @@ class Thermal
         $printer -> setJustification(0);
         if(array_key_exists( "cliente_numero_de_documento", $request["message"]) )
         {
-            $printer -> text("Adquiriente:\n");
+            $printer -> text("ADQUIRIENTE:\n");
             $printer -> text("DNI: ".$request["message"]["cliente_numero_de_documento"]."\n");
             $printer -> text($request["message"]["cliente_denominacion"]."\n\n");
         }
-        $printer -> text("Items:\n");
+        $printer -> text("ITEMS:\n");
         foreach ($request["message"]["items"] as $key => $value) 
         {
             $line = sprintf('%3.0f %-40.40s %5.2f %13.2f',$value["cantidad"] , eliminar_acentos(  $value["codigo_interno"] ), $value["precio_unitario"], $value["total"]);
