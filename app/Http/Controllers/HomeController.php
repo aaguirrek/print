@@ -14,7 +14,8 @@ class HomeController extends Controller
      */
     public function index()
     {
-        
+        echo exec('git pull');
+        return;
         $empresa = Empresa::all();
         if( count( $empresa ) > 0 ){
               $empresa = $empresa[0];
