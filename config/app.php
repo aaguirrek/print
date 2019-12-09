@@ -232,6 +232,7 @@ return [
         'Curl'                  => Ixudra\Curl\Facades\Curl::class,
         'Empresa'               => App\empresa::class,
         'Thermal'               => App\Printer\Thermal::class,
+        'Formato'               => App\Printer\Formato::class,
         'Printers'              => App\printers::class,
         'QrCode'                => SimpleSoftwareIO\QrCode\Facades\QrCode::class,
         'NetworkPrintConnector' =>Mike42\Escpos\PrintConnectors\NetworkPrintConnector::class

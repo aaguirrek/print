@@ -1,5 +1,5 @@
 var venta = {
-    "tipo":"Comanda",
+    "tipo":"Venta",
     "message": {
         "name": "RES-2019-11-30-00014",
         "owner": "Administrator",

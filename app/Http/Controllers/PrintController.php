@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Thermal;
+use Formato;
 class PrintController extends Controller
 {
     /**
@@ -54,16 +55,16 @@ class PrintController extends Controller
             return Thermal::Comanda($request);
         }
         if($request["tipo"] == "Pre Cuenta"){
-            return Thermal::PreCuenta($request);    
+            return Formato::pago($request);  
         }
         if($request["tipo"] == "Boleta"){
-            return Thermal:: Boleta($request);     
+            return Formato::pago($request);   
         }
         if($request["tipo"] == "Factura"){
-            return Thermal:: Factura($request);     
+            return Formato::pago($request);      
         }
         if($request["tipo"] == "Sales Invoice"){
-            return Thermal:: SalesInvoice($request);    
+            return Formato::pago($request);    
         }
         return;
     }

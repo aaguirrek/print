@@ -139,13 +139,10 @@
                 $.post('/api/checkall', {}, function(result){});
                 localStorage.setItem("pull", datef);
             }
-
-
             var print = io('http://frappe.cf:4003');
-            print.on('print-socket',function(doc){
+           print.on('print-socket',function(doc){
                 doc = JSON.parse(doc);
-                dat = new Date();
-                doc.time = formatDate(dat)+" "+formatHour(dat);
+                doc.time = new Date().toLocaleString("es-ES", {timeZone: "America/Lima"})
                 if(doc.sunat.ruc == "{{$empresa->ruc}}" ){
                     if (localStorage.getItem("pull")){
                         date_pull = localStorage.getItem("pull");
@@ -158,7 +155,7 @@
                     $.post('/api/print', doc, function(result){});
                 }
             });
-            
+
         </script>        
     </body>
 </html>

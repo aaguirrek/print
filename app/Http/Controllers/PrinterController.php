@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Printers;
-
+use Formato;
 class PrinterController extends Controller
 {
     /**
@@ -33,6 +33,10 @@ class PrinterController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    public function test(Request $request)
+    {
+        return Formato::pago($request);
+    }
     public function store(Request $request)
     {
         $comanda = Printers::firstOrNew(['ubicacion' => 'Comanda']);

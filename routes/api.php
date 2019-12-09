@@ -18,3 +18,4 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 Route::post('/print', 'PrintController@store');
 Route::post('/checkall', 'PrintController@index');
+Route::post('/test', 'PrinterController@test');
