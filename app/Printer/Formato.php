@@ -198,7 +198,7 @@ function detectFacturaComprobante($res){
     if(key_exists("total_igv", $res["message"] )){
         $igv = (float)$res["message"]["total_igv"];
     }else{
-        $igv = ( $total + $PercentIGV ) / ( 100 + $PercentIGV );
+        $igv = ( $total * $PercentIGV ) / ( 100 + $PercentIGV );
     }
     $igv = round( $igv , 2 );
     if(key_exists("total_gravada", $res["message"]) ){   
@@ -319,7 +319,7 @@ function detectFacturaComprobante($res){
     $el->tax_id = $tax_id;
     $el->customer = $customer;
     
-    if(array_key_exists("name", $res["message"])){
+    if(key_exists("name", $res["message"])){
         $el->name = $res["message"]["name"];
     }else{
         $el->name = "Pre Cuenta";

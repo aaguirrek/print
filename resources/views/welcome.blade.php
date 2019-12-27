@@ -143,6 +143,7 @@
            print.on('print-socket',function(doc){
                 doc = JSON.parse(doc);
                 doc.time = new Date().toLocaleString("es-ES", {timeZone: "America/Lima"})
+                return console.log(doc)
                 if(doc.sunat.ruc == "{{$empresa->ruc}}" ){
                     if (localStorage.getItem("pull")){
                         date_pull = localStorage.getItem("pull");
