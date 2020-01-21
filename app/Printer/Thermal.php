@@ -15,6 +15,7 @@ use Storage;
 
 class Thermal{
     public static function Comanda($request){
+        $tieneBebidas=false;
         $empresa = Empresa::all();
         if( count($empresa) > 0 ){
             $empresa = $empresa[0];   
@@ -37,6 +38,10 @@ class Thermal{
         $printer->setTextSize(1,1);
         $printer -> setJustification(0);
         foreach ($request["message"]["items"] as $key => $value){
+            if($value["item_group"] == "Bebidas")
+            {
+                $tieneBebidas=true;
+            }
             $printer -> text( $value["qty"] . " :: " . eliminar_acentos($value["item_name"]) . "\n");
             if(array_key_exists("extras", $value )  ){
                 if(count( $value["extras"] ) > 0 ){
@@ -60,8 +65,9 @@ class Thermal{
         $printer -> cut();
         $printer -> text("\n \n \n");
         $printer -> close();
-
-        comanda_bebidas();
+        if($tieneBebidas == true){
+            comanda_bebidas();
+        }
         return $request->all();
     }
 
