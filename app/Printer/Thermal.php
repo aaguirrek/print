@@ -60,6 +60,8 @@ class Thermal{
         $printer -> cut();
         $printer -> text("\n \n \n");
         $printer -> close();
+
+        comanda_bebidas();
         return $request->all();
     }
 
@@ -83,6 +85,57 @@ class Thermal{
     
 }
 
+function comanda_bebidas($cadena)
+{
+    $empresa = Empresa::all();
+    if( count($empresa) > 0 ){
+        $empresa = $empresa[0];   
+    }
+    $printer1 = Printers::Where('ubicacion', 'Bebidas')->first();
+    if( $printer1 ){}else{
+        return abort(500);
+    }
+    if($printer1->printer == "USB"){
+        $connector = new WindowsPrintConnector( $printer1->ruta );
+    }else{
+        $connector = new NetworkPrintConnector( $printer1->ruta , 9100 );
+    }
+    $printer = new Printer($connector);
+    $printer->setFont(2);
+    $printer -> setJustification(1);
+    $printer -> text($request["time"] . " \n");
+    $printer->setTextSize(2,2);
+    $printer -> text("".$request["mesa"]."\n\n");
+    $printer->setTextSize(1,1);
+    $printer -> setJustification(0);
+    foreach ($request["message"]["items"] as $key => $value){
+        if($value["item_group"] == "Bebidas")
+        {
+            $printer -> text( $value["qty"] . " :: " . eliminar_acentos($value["item_name"]) . "\n");
+            if(array_key_exists("extras", $value )  ){
+                if(count( $value["extras"] ) > 0 ){
+                    $printer -> setJustification(1);
+                    $printer -> text( ".: Toppings :.\n");
+                    $printer -> setJustification(0);
+                    foreach ($value["extras"] as $clave => $valor){
+                        $printer -> text( "    " . $valor . " \n");
+                    }
+                    if(key_exists("comentario",$value ) ){
+                        $printer -> text( "    " . $value["comentario"] . " \n");
+                    }
+                    $printer -> text("\n\n");
+                }
+            }
+        }
+    }
+    $printer -> setJustification(1);
+    $printer -> text("\n");
+    $printer -> text( "Build on Frappe\n\n");
+    $printer -> setJustification(1);
+    $printer -> cut();
+    $printer -> text("\n \n \n");
+    $printer -> close();
+}
 
 function eliminar_acentos($cadena)
 {

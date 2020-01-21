@@ -50,6 +50,11 @@ class PrinterController extends Controller
         $caja ->ruta = $request["caja"];
         $caja ->save();
 
+        $comanda = Printers::firstOrNew(['ubicacion' => 'Bebidas']);
+        $comanda ->printer = $request["cBebidas"];
+        $comanda ->ruta = $request["Bebidas"];
+        $comanda ->save();
+
         return ['comanda' => $comanda, 'caja' => $caja ];
     }
 
