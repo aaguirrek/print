@@ -93,7 +93,7 @@ function comanda_bebidas($cadena)
     }
     $printer1 = Printers::Where('ubicacion', 'Bebidas')->first();
     if( $printer1 ){}else{
-        return abort(500);
+        return;
     }
     if($printer1->printer == "USB"){
         $connector = new WindowsPrintConnector( $printer1->ruta );
