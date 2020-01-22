@@ -38,6 +38,7 @@ class Thermal{
         $printer->setTextSize(1,1);
         $printer -> setJustification(0);
         foreach ($request["message"]["items"] as $key => $value){
+            if ( array_key_exists("item_group", $value) )
             if($value["item_group"] == "Bebidas")
             {
                 $tieneBebidas=true;
