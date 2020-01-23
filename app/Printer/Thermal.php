@@ -24,13 +24,11 @@ class Thermal{
         if( $printer1 ){}else{
             return abort(500);
         }
-        $connector = FilePrintConnector("php://stdout");
-        /*
         if($printer1->printer == "USB"){
             $connector = new WindowsPrintConnector( $printer1->ruta );
         }else{
             $connector = new NetworkPrintConnector( $printer1->ruta , 9100 );
-        }*/
+        }
         $printer = new Printer($connector);
         $printer->setFont(2);
         $printer -> setJustification(1);
