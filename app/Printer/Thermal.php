@@ -20,6 +20,7 @@ class Thermal{
         if( count($empresa) > 0 ){
             $empresa = $empresa[0];   
         }
+        //$connector = new FilePrintConnector("php://stdout");
         $printer1 = Printers::Where('ubicacion', 'comanda')->first();
         if( $printer1 ){}else{
             return abort(500);
@@ -69,7 +70,7 @@ class Thermal{
         $printer -> text("\n \n \n");
         $printer -> close();
         if($tieneBebidas == true){
-            comanda_bebidas();
+            comanda_bebidas($request);
         }
         return $request->all();
     }
@@ -94,13 +95,14 @@ class Thermal{
     
 }
 
-function comanda_bebidas($cadena)
+function comanda_bebidas($request)
 {
     try{
         $empresa = Empresa::all();
         if( count($empresa) > 0 ){
             $empresa = $empresa[0];   
         }
+        //$connector = new FilePrintConnector("php://stdout");
         $printer1 = Printers::Where('ubicacion', 'Bebidas')->first();
         if( $printer1 ){}else{
             return;
